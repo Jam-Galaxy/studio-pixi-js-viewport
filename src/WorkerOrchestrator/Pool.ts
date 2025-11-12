@@ -37,6 +37,7 @@ export class Pool {
     const waiter = this.waiters.shift();
     if (waiter) {
       waiter(worker);
+      console.log("waiter(worker)")
     } else {
       this.idle.push(worker);
     }
