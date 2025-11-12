@@ -53,7 +53,7 @@ export class Actions {
   }
   public async workerTest() {
     const taskRequest = {
-      name: "task1" as const,
+      name: "drawWaveform" as const,
       payload: {
         field1: 123,
       },

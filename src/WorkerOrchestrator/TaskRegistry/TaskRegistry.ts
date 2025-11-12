@@ -4,7 +4,7 @@ import { EnforceBase } from "./BaseTaskRegistry";
  * Filled in manually. A field must be added for each worker task. Key - the task name. Payload - the data required to complete the task. Result - the resulting data.
  */
 export type TaskRegistry = EnforceBase<{
-  task1: {
+  drawWaveform: {
     payload: {
       field1: number;
     };

@@ -24,26 +24,3 @@ export type TaskResponse<T extends TaskName = TaskName> = TaskSuccess<T> | TaskF
 export function isSuccess<T extends TaskName>(taskResponse: TaskResponse<T>): taskResponse is TaskSuccess<T> {
   return taskResponse.ok;
 }
-
-const taskRequest: TaskRequest = {
-  name: "task1",
-  payload: {
-    field1: 3
-  },
-}
-
-const taskResponse1: TaskResponse = {
-  name: "task1",
-  id: "123",
-  ok: true,
-  result: 3
-}
-const taskResponse2: TaskResponse = {
-  name: "task1",
-  id: "123",
-  ok: false,
-  error: {
-    message: 'test',
-    stack: 'test2'
-  },
-}
