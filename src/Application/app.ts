@@ -113,13 +113,12 @@ export async function app() {
 
   const viewModel = new ViewModel();
 
-  const engine2D = new Engine2D(gridProvider, viewModel);
+  const workerOrchestrator = new WorkerOrchestrator();
+  const engine2D = new Engine2D(gridProvider, viewModel, workerOrchestrator);
   await engine2D.initialize();
   engine2D.container = canvasHolderElement; 
 
   const audioInspector = new MockAudioInspector();
-
-  const workerOrchestrator = new WorkerOrchestrator();
 
   subscribeToViewModelEvents(viewModel, engine2D);
 

@@ -7,6 +7,7 @@ import { WorldOverlay } from "./WorldOverlay";
 import { IGridProvider } from "@Engine2D/interfaces/required/IGridProvider";
 import { ViewModel } from "@/ViewModel/ViewModel";
 import { InteractionSession } from "@/Application/services/InteractionSession";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
 
 export class WorldLayer {
   private tpp: TransformProjectionProvider;
@@ -16,11 +17,12 @@ export class WorldLayer {
 
   constructor(private viewModel: ViewModel, private pixiApp: Application, transformProjectionProvider: TransformProjectionProvider,
     private viewport: Viewport,
-    private gridProvider: IGridProvider
+    private gridProvider: IGridProvider,
+    private workerOrchestrator: WorkerOrchestrator
   ) {
     this.tpp = transformProjectionProvider;
     this.worldContainer = new Container({label: "WorldLayer"});
-    this.workarea = new Workarea(this.viewModel, this.pixiApp, this.worldContainer, this.tpp, this.viewport, this.gridProvider);
+    this.workarea = new Workarea(this.viewModel, this.pixiApp, this.worldContainer, this.tpp, this.viewport, this.gridProvider, this.workerOrchestrator);
     this.worldOverlay = new WorldOverlay(this.pixiApp, this.worldContainer, this.tpp, this.viewport, this.gridProvider);
   }
  

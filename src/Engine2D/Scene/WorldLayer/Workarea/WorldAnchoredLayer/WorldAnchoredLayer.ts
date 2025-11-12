@@ -6,15 +6,18 @@ import { Tracks } from "./Tracks/Tracks";
 import { Segments } from "./Segments/Segments";
 import { ViewModel } from "@/ViewModel/ViewModel";
 import { InteractionSession } from "@/Application/services/InteractionSession";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
 
 export class WorldAnchoredLayer {
   private container: Container;
   private tracks: Tracks;
   public segments: Segments;
-  constructor(private viewModel: ViewModel, private parentContainer: Container, private tpp: TransformProjectionProvider, private viewport: Viewport) {
+  constructor(private viewModel: ViewModel, private parentContainer: Container, private tpp: TransformProjectionProvider, private viewport: Viewport,
+    private workerOrchestrator: WorkerOrchestrator
+  ) {
     this.container = new Container({label: "WorldAnchoredLayer"});
     this.tracks = new Tracks();
-    this.segments = new Segments(this.viewModel, this.tpp, this.container, this.viewport);
+    this.segments = new Segments(this.viewModel, this.tpp, this.container, this.viewport, this.workerOrchestrator);
   }
 
   private addTestLine(graphics: Graphics, start: Point, end: Point) {

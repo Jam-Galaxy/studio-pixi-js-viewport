@@ -3,6 +3,8 @@ import { PiecesPlan, WaveformData, WaveformStyle } from "./Waveform";
 import { TransformProjectionProvider } from "@/Engine2D/TransformProjectionProvider";
 import { Container, Graphics } from "pixi.js";
 import { AudioMeta } from "@/Engine2D/interfaces/required/AudioMisc";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
+import { TaskRequest } from "@/WorkerOrchestrator/TaskRegistry/TaskRegistryDerivatives";
 
 export class WaveformPiece {
   private graphics: Graphics;
@@ -12,6 +14,7 @@ export class WaveformPiece {
     private waveformData: WaveformData,
     private index: number,
     private piecePlan: PiecesPlan,
+    private workerOrchestrator: WorkerOrchestrator
   ) {
     this.graphics = new Graphics();
     this.graphics.cacheAsTexture(true);
@@ -145,7 +148,23 @@ export class WaveformPiece {
 
     return true;
   }
-  public renderPieceWaveform() {
+  public renderPieceWaveform() { //TODO: use web worker via this.workerOrchestrator instead! Do not render on main thread it is realy slow!
+    // TODO:
+    const taskRequest: TaskRequest = {
+      name: "drawWaveform",
+      payload: {
+        field1: 123, //TODO: actual payload. Think about transfers of data (Shared buffer or transfer). Try not to copy large audio data too much. Transfer or share it instead
+      },
+      batchId: "todo" //for cancel whole batch at one time purpose (in onPPUChange method of Waveform class)
+    }
+    this.workerOrchestrator.submit(taskRequest).then(response => {
+      console.log("response=", response);
+      //TODO:
+      // set ready texture from response to sprite
+      // cancel invalid task by id or by batchId if necessary
+    });
+    // /TODO:
+
     this.graphics.clear();
     
     const channelData = this.getChannelData(this.waveformData.meta, this.waveformData.buffer, this.waveformData.meta.channels);

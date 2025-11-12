@@ -17,6 +17,7 @@ import { MidiTrackApi } from "./SceneApi/MidiTrackApi";
 import { MidiSegmentApi } from "./SceneApi/MidiSegmentApi";
 import { ViewModel } from "../ViewModel/ViewModel";
 import { InteractionSession } from "@/Application/services/InteractionSession";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
 
 
 function getDefaultViewportPositionPx() {
@@ -82,7 +83,7 @@ export class Engine2D implements IEngine2D {
     });
     this.container.appendChild(this.canvas);
   }
-  constructor(private gridProvider: IGridProvider, viewModel: ViewModel) {
+  constructor(private gridProvider: IGridProvider, viewModel: ViewModel, private workerOrchestrator: WorkerOrchestrator) {
     this.canvas = document.createElement("canvas");
     this.viewModel = viewModel
     this._container = null;
@@ -121,7 +122,7 @@ export class Engine2D implements IEngine2D {
       // autoDensity: false,
     });
     
-    this._scene = new Scene(this.viewModel, this.pixiApp, this.transformProjectionProvider, this.domEventListener, this.viewport, this.gridProvider);
+    this._scene = new Scene(this.viewModel, this.pixiApp, this.transformProjectionProvider, this.domEventListener, this.viewport, this.gridProvider, this.workerOrchestrator);
     this.scene.initialize();
     
     this._sceneApi = {

@@ -8,6 +8,7 @@ import { IGridProvider } from "@Engine2D/interfaces/required/IGridProvider";
 import { configuration } from "@Engine2D/data/configuration";
 import { ViewModel } from "@/ViewModel/ViewModel";
 import { InteractionSession } from "@/Application/services/InteractionSession";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
 
 export class Workarea {
   public worldAnchoredLayer: WorldAnchoredLayer;
@@ -17,10 +18,12 @@ export class Workarea {
   private container: Container;
   private mask: Graphics;
 
-  constructor(private viewModel: ViewModel, private pixiApp: Application, private parentContainer: Container, private tpp: TransformProjectionProvider, private viewport: Viewport, private gridProvider: IGridProvider) {
+  constructor(private viewModel: ViewModel, private pixiApp: Application, private parentContainer: Container, private tpp: TransformProjectionProvider, private viewport: Viewport, private gridProvider: IGridProvider,
+    private workerOrchestrator: WorkerOrchestrator
+  ) {
     this.container = new Container({label: "Workarea"});
     this.mask = new Graphics();
-    this.worldAnchoredLayer = new WorldAnchoredLayer(this.viewModel, this.container, this.tpp, this.viewport);
+    this.worldAnchoredLayer = new WorldAnchoredLayer(this.viewModel, this.container, this.tpp, this.viewport, this.workerOrchestrator);
     this.xAxisLockedLayer = new XAxisLockedLayer(this.pixiApp, this.container, this.tpp, this.viewport, this.gridProvider);
     this.yAxisLockedLayer = new YAxisLockedLayer(this.pixiApp, this.container, this.tpp, this.viewport, this.gridProvider);
   

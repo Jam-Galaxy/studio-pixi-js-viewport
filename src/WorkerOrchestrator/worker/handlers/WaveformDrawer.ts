@@ -22,6 +22,7 @@ export class WaveformDrawer {
   }
 
   private drawWaveformHandler(event: EventToWorker<"drawWaveform">) {
+    //TODO: draw waveform on offscreen canvas with pixi.js. Then share or transfer ready texture to main thread
     const message = event.data;
     const response: MsgFromWorker = {
       name: "drawWaveform",

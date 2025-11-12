@@ -10,6 +10,7 @@ import { WaveformPiecePool } from "./WaveformPiecePool";
 import { belongsToRange } from "@/foundation/Geometry/GeometryFunctions";
 import { InteractionSession } from "@/Application/services/InteractionSession";
 import { configuration } from "@/Engine2D/data/configuration";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
 
 export type PiecesPlan = {
   indices: Range;
@@ -50,6 +51,7 @@ export class Waveform {
     private waveformData: WaveformData,
     private style: WaveformStyle,
     private heightWorld: number,
+    private workerOrchestrator: WorkerOrchestrator
   ) {
     this.container = new Container({label: "Waveform"});
     this.pool = new WaveformPiecePool<WaveformPiece>();
@@ -117,7 +119,7 @@ export class Waveform {
     let piece = this.pool.acquire();
 
     if(!piece) {
-      piece = new WaveformPiece(this.container, this.tpp, this.heightWorld, this.style, this.waveformData, index, piecePlan);
+      piece = new WaveformPiece(this.container, this.tpp, this.heightWorld, this.style, this.waveformData, index, piecePlan, this.workerOrchestrator);
       piece.addLayer();
     } else {
       piece.visible = true;

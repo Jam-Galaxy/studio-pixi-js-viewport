@@ -9,6 +9,7 @@ import { ViewModel } from "@/ViewModel/ViewModel";
 import { Waveform, WaveformData, WaveformStyle } from "./Waveform/Waveform";
 import { Viewport } from "@/Engine2D/Viewport";
 import { InteractionSession } from "@/Application/services/InteractionSession";
+import { WorkerOrchestrator } from "@/WorkerOrchestrator";
 
 export class WaveSegment extends BaseSegment {
   private id: UniqueId;
@@ -16,12 +17,14 @@ export class WaveSegment extends BaseSegment {
   private bgGraphics: Graphics;
   private waveform: Waveform;
 
-  constructor(segmentRM: IWaveSegmentRM, private viewModel: ViewModel, private tpp: TransformProjectionProvider, private parentContainer: Container, private viewport: Viewport) {
+  constructor(segmentRM: IWaveSegmentRM, private viewModel: ViewModel, private tpp: TransformProjectionProvider, private parentContainer: Container, private viewport: Viewport,
+    private workerOrchestrator: WorkerOrchestrator
+  ) {
     super();
     this.id = segmentRM.segment.id;
     this.container = new Container({label: "WaveSegment"});
     this.bgGraphics = new Graphics();
-    this.waveform = new Waveform(this.container, this.tpp, this.viewport, this.viewModel, this.id, this.getWaveformData(), this.getWaveformStyle(), this.getWaveformHeightWorld());
+    this.waveform = new Waveform(this.container, this.tpp, this.viewport, this.viewModel, this.id, this.getWaveformData(), this.getWaveformStyle(), this.getWaveformHeightWorld(), this.workerOrchestrator);
     this.container.addChild(this.bgGraphics);
     this.waveform.addLayer();
     this.update();
