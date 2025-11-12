@@ -1,0 +1,3 @@
+Future-proofing (for versatility): the ability to use different workers:
+  - in the browser, web worker;
+  - in node.js, worker_threads (node ​​worker)

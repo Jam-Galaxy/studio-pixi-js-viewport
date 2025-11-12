@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "node",
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@Engine2D/*": [
+        "src/Engine2D/*"
+      ],
+      "@foundation/*": [
+        "src/foundation/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost",
+      "WebWorker",
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue", "src/Engine2D/Scene/WorldLayer/WorldOverlay",
+  ],
+  "exclude": [
+    "**/node_modules"
+  ]
+}
