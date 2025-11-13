@@ -5,6 +5,10 @@ import { TaskName, TaskRequest, TaskResponse } from './TaskRegistry/TaskRegistry
 import { UniqueId } from './interfaces/required';
 import { IWorkerAdapter } from './interfaces/internal/IWorkerAdapter';
 
+/** A large number of items in the queue means that either the number of tasks is truly large, or there are some problems with task processing (for example, something isn't working, results aren't being returned, or there are bugs in the queue implementation itself). As a precaution, a warning will be sent to the console when the queue has a large number of items. This will make potential problems obvious. */
+const QUEUE_WARN_SIZE = 100;
+/** If the cycle runs continuously, this may be caused by errors. A warning will be sent when crossing the border. */
+const LOOP_ITERATION_WARN_COUNT = 1000;
 
 type TaskMeta = {
   createdAt: number;
@@ -66,14 +70,18 @@ export class WorkerOrchestrator {
   private async pump() {
     if (this.pumping) return;
     this.pumping = true;
-
+    let iterationNumber = 0;
     
     try {
+      if(this.queue.length >= QUEUE_WARN_SIZE) {
+        console.warn(`WorkerOrchestrator: pump: task queue length=${this.queue.length} is too large. Make sure this is not caused by errors.`, this.queue.length);
+      }
       while (!this.queue.isEmpty()) {
+        if(iterationNumber === LOOP_ITERATION_WARN_COUNT) {
+          console.warn(`WorkerOrchestrator: pump: The cycle has completed ${iterationNumber} iterations. Continuously running loop may indicate errors in using WorkerOrchestrator.`);
+        }
         const worker = await this.pool.acquire();
-        console.log("lenght1=", this.queue.length);
         const queueTask = this.queue.dequeue();
-        console.log("lenght2=", this.queue.length);
         if(!queueTask) { //queue is possibly cleared while waiting for worker
           this.pool.release(worker);
           break;
@@ -118,6 +126,7 @@ export class WorkerOrchestrator {
           meta: queueTask.meta
         }
         worker.postMessage(workerTask);
+        iterationNumber++;
       }
     } catch(error) {
       console.error(error);

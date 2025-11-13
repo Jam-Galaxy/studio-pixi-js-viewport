@@ -17,7 +17,7 @@ export class Pool {
     // if there is a free one, we will give it away immediately
     if (this.idle.length > 0) {
       const worker = this.idle.pop()!;
-      console.log("acquire: pop");
+      // console.log("acquire: pop");
       return worker;
     }
 
@@ -25,11 +25,11 @@ export class Pool {
     if (this.total < this.maxSize) {
       const worker = this.factory();
       this.total += 1;
-      console.log("acquire: create")
+      // console.log("acquire: create")
       return worker;
     }
 
-    console.log("acquire: wait");
+    // console.log("acquire: wait");
     // otherwise, we wait for release
     return new Promise<IWorkerAdapter>((resolve) => {
       this.waiters.push(resolve);
