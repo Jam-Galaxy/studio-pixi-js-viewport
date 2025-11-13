@@ -47,7 +47,6 @@ export class WorkerOrchestrator {
 
   /** Submitting a task and waiting for the result */
   submit<T extends TaskName = TaskName>(taskRequest: TaskRequest<T>): Promise<TaskResponse<T>> {
-    console.log("submit: start");
     return new Promise<TaskResponse<T>>((resolve, reject) => {
       const queueTask: QueueTask<T> = {
         request: taskRequest,
@@ -60,13 +59,11 @@ export class WorkerOrchestrator {
       }
       this.queue.enqueue(queueTask as any);
       this.pump().catch((e) => console.error('[WorkerOrchestrator] pump error', e));
-      console.log(this.queue)
     });
   }
 
   /** Chief Dispatcher: As long as there are tasks, we issue them to workers. */
   private async pump() {
-    console.log("pump: this.pumping=", this.pumping);
     if (this.pumping) return;
     this.pumping = true;
 
@@ -86,7 +83,6 @@ export class WorkerOrchestrator {
 
         // One disposable handler per task
         const onMessage = (event: MessageEvent<TaskResponse>) => {
-          console.log("onMessage:", event.data.id, queueTask.id)
           const data = event.data;
           if (!data || data.id !== queueTask.id) return;
 
@@ -127,7 +123,6 @@ export class WorkerOrchestrator {
       console.error(error);
     }
      finally {
-      console.log("finally: start")
       this.pumping = false;
     }
   }

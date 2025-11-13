@@ -5,7 +5,6 @@ import { IWorkerAdapter, IWorkerFactory } from "./interfaces/internal/IWorkerAda
  */
 export class Pool {
   private idle: IWorkerAdapter[] = [];
-  private working: IWorkerAdapter[] = [];
   private waiters: ((w: IWorkerAdapter) => void)[] = [];
   private total = 0;
 
@@ -18,15 +17,19 @@ export class Pool {
     // if there is a free one, we will give it away immediately
     if (this.idle.length > 0) {
       const worker = this.idle.pop()!;
+      console.log("acquire: pop");
+      return worker;
     }
 
     // we can create - we create
     if (this.total < this.maxSize) {
       const worker = this.factory();
       this.total += 1;
+      console.log("acquire: create")
       return worker;
     }
 
+    console.log("acquire: wait");
     // otherwise, we wait for release
     return new Promise<IWorkerAdapter>((resolve) => {
       this.waiters.push(resolve);
@@ -37,7 +40,6 @@ export class Pool {
     const waiter = this.waiters.shift();
     if (waiter) {
       waiter(worker);
-      console.log("waiter(worker)")
     } else {
       this.idle.push(worker);
     }

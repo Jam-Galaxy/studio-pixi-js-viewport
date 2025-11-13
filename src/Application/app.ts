@@ -133,6 +133,6 @@ export async function app() {
   // await actions.addMockSegment();
 
 
-  await actions.addMockTracks(20);
+  await actions.addMockTracks(1);
   actions.workerTest();
 }

@@ -62,9 +62,9 @@ export class Actions {
     const response = await this.workerOrchestrator.submit(taskRequest);
     console.log("response=", response);
     if(isSuccess(response)) {
-      console.log("response.result=", response.result);
+      // console.log("response.result=", response.result);
     } else {
-      console.log("response.error=", response.error);
+      // console.log("response.error=", response.error);
     }
   }
 }
