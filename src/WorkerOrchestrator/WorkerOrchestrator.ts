@@ -9,6 +9,8 @@ import { IWorkerAdapter } from './interfaces/internal/IWorkerAdapter';
 const QUEUE_WARN_SIZE = 100;
 /** If the cycle runs continuously, this may be caused by errors. A warning will be sent when crossing the border. */
 const LOOP_ITERATION_WARN_COUNT = 1000;
+/** recommended number of simultaneously running workers */
+const DEFAULT_POOL_SIZE = navigator.hardwareConcurrency-1;
 
 type TaskMeta = {
   createdAt: number;
@@ -43,7 +45,7 @@ export class WorkerOrchestrator {
   constructor(
     options?: { poolSize?: number }
   ) {
-    const size = options?.poolSize ?? 2;
+    const size = options?.poolSize ?? DEFAULT_POOL_SIZE;
     this.pool = new Pool(size, createWebWorker);
     this.activeByTaskId = new Map();
     // this.activeByBatchId = new Map();
