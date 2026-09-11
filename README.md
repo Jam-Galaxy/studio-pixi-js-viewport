@@ -1,4 +1,4 @@
-> **Status: archived.** A PixiJS viewport built for the Jam Galaxy browser studio. Developed in November 2025. Jam Galaxy is no longer active and this code is not maintained. It is published as-is so the work is readable and reusable.
+> A PixiJS canvas viewport built for the Jam Galaxy browser studio in November 2025. Open source under MIT. No longer under active development.
 
 # Studio Pixi.js viewport standalone
 This is a viewport on pixi.js for the [studio](https://github.com/Jam-Galaxy/studio) project.
